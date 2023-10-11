@@ -1,6 +1,7 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
-import math
+
 from pico2d import load_image, SDL_KEYDOWN, SDLK_SPACE, get_time, SDL_KEYUP, SDLK_RIGHT, SDLK_LEFT
+import math
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -60,7 +61,7 @@ class Sleep:
     @staticmethod
     def draw(boy):
         if boy.action == 2:
-            boy.image.clip_composite_draw(boy.frame * 100, 300, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
+            boy.image.clip_composite_draw(boy.frame * 100, 200, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
         else:
             boy.image.clip_composite_draw(boy.frame * 100, 300, 100, 100, 3.141592 / 2, '', boy.x - 25, boy.y - 25, 100, 100)
 
@@ -81,7 +82,7 @@ class Run:
         pass
     @staticmethod
     def draw(boy):
-        boy.image.clip_composite_draw(boy.frame * 100, boy.action * 100, 100, 100, boy.x, boy.y)
+        boy.image.clip_draw(boy.frame * 100, boy.action * 100, 100, 100, boy.x, boy.y)
 
 
 class StateMachine:
@@ -89,9 +90,9 @@ class StateMachine:
         self.boy = boy
         self.cur_state = Sleep
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up :Run, time_out: Sleep},
+            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, time_out: Sleep},
             Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle},
-            Sleep : {right_down: Run, left_down: Run, right_up: Run, left_up: Run, space_down: Idle}
+            Sleep: {right_down: Run, left_down: Run, right_up: Run, left_up: Run, space_down: Idle}
         }
 
     def handle_event(self, e):
